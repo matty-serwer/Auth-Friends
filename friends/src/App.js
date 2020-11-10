@@ -3,30 +3,51 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import "./App.css";
 
-import Login from './components/Login';
-import FriendsList from './components/FriendsList';
-import PrivateRoute from './components/PrivateRoute';
+import Login from "./components/Login";
+import FriendsList from "./components/FriendsList";
+import PrivateRoute from "./components/PrivateRoute";
 
-import axiosWithAuth from './utils/axiosWithAuth';
+import axiosWithAuth from "./utils/axiosWithAuth";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   const logout = () => {
-
-  }
+    setLoggedIn(false);
+    // axiosWithAuth()
+    //   .post("/logout")
+    //   .then((req) => {
+    //     localStorage.removeItem("token"); 
+    //   });
+  };
 
   return (
     <Router>
       <div className='App'>
-        <Link to='/login'>Login</Link>
-        <Link to='/login' onClick={logout}>Logout</Link>
-        <Link to='/friendsList'>Friends List</Link>
+        {/* <Link to='/login'>Login</Link>
+        <Link to='/login' onClick={logout}>
+          Logout
+        </Link>
+        <Link to='/friendsList'>Friends List</Link> */}
+        {isLoggedIn ? (
+          <div>
+            <Link to='/login' onClick={logout}>
+              Logout
+            </Link>
+            <Link to='/friendsList'>Friends List</Link>
+          </div>
+        ) : (
+          <Link to='/login'>Login</Link>
+        )}
       </div>
-
       <Switch>
         <PrivateRoute exact path='/friendslist' component={FriendsList} />
-        <Route path="/login" component={Login} />
+        <Route
+          path='/login'
+          render={(props) => {
+            return <Login {...props} setLoggedIn={setLoggedIn} />;
+          }}
+        />
       </Switch>
     </Router>
   );
