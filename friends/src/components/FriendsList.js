@@ -25,12 +25,25 @@ class FriendsList extends React.Component {
       });
   };
 
+  removeFriend = (friendID) => {
+      console.log(friendID);
+      axiosWithAuth()
+        .delete(`/friends/${friendID}`)
+        .then(req => {
+            console.log(req);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        this.getFriendsData();
+  }
+
   render() {
     return (
       <div>
         <h1>Friends List</h1>
         {this.state.friends.map(friend => (
-            <Friend friend={friend} key={friend.key}/>
+            <Friend friend={friend} key={friend.id} removeFriend={this.removeFriend}/>
     ))}
       </div>
     );
