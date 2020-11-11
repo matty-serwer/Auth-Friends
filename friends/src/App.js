@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import "./App.css";
@@ -14,12 +14,19 @@ function App() {
 
   const logout = () => {
     setLoggedIn(false);
+    localStorage.removeItem('token');
     // axiosWithAuth()
     //   .post("/logout")
     //   .then((req) => {
     //     localStorage.removeItem("token"); 
     //   });
   };
+
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+      setLoggedIn(true);
+    }
+  }, [])
 
   return (
     <Router>
